@@ -1,0 +1,12 @@
+encrypt:
+  key: ISSEMETRIC
+spring:
+  application:
+    name: recipecommand
+  profiles:
+    active: default
+  cloud:
+    config:
+      uri: http://104.154.183.68:9999
+      enabled: true
+      fail-fast: true

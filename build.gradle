@@ -1,0 +1,83 @@
+plugins {
+    id 'org.springframework.boot' version '2.2.5.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
+    //id 'com.commercehub.gradle.plugin.avro' version '0.16.0'
+}
+
+group = 'com.larecette'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven { url "http://packages.confluent.io/maven/" }
+}
+
+ext {
+    set('springCloudVersion', "Hoxton.SR3")
+}
+
+dependencies {
+    // Libs for REST
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    // database libs
+    //implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+    //implementation 'org.elasticsearch.client:transport'
+    implementation 'org.springframework.cloud:spring-cloud-gcp-starter-data-spanner'
+    implementation 'org.springframework.cloud:spring-cloud-gcp-starter-storage'
+    //Add client side for Eureka
+   // implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    //implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    // For microservice communication by name
+    //implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    //Implemantation Circuit Breaker pattern, zuul include this lib, but not all
+    //implementation 'org.springframework.cloud:spring-cloud-starter-netflix-hystrix'
+    //config
+    //Library for Kafka
+    //implementation "org.apache.kafka:kafka_2.12:1.1.0"
+    //data serialization system for Kafka
+    //implementation 'io.confluent:kafka-avro-serializer:4.0.0'
+    //implementation 'org.apache.avro:avro:1.8.2'
+    //auth
+    //implementation 'org.springframework.cloud:spring-cloud-security'
+    //implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure'
+    //implementation 'org.springframework.security:spring-security-jwt'
+
+    //Annotation preprocessor
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    implementation 'junit:junit:4.12'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+bootJar {
+    mainClassName = 'com.larecette.recipecommand.RecipeCommandApplication'
+}
+
+//avro {
+//	createSetters = true
+//	fieldVisibility = "PRIVATE"
+//}
+
+test {
+    useJUnitPlatform()
+}
+
